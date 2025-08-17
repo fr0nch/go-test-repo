@@ -1,0 +1,510 @@
+{
+	"$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json",
+	"fileVersion": 1,
+	"version": "1.0.0",
+	"friendlyName": "[Plugify] Permissions Core",
+	"description": "Minimalistic permissions core",
+	"createdBy": "untrustedmodders",
+	"createdByURL": "https://github.com/untrustedmodders/",
+	"docsURL": "https://github.com/untrustedmodders/plugify-permissions",
+	"downloadURL": "https://github.com/untrustedmodders/plugify-permissions/releases/download/v1.0.0/plugify-perms.zip",
+	"updateURL": "https://untrustedmodders.github.io/plugify-permissions/plugify-permissions.json",
+	"entryPoint": "plugify-permissions",
+	"supportedPlatforms": [],
+	"languageModule": {
+		"name": "cpp"
+	},
+	"dependencies": [],
+	"exportedMethods": [
+       {
+           "name": "HasPermission",
+           "group": "Usermanager",
+           "description": "",
+           "funcName": "HasPermission",
+           "paramTypes": [
+               {
+                   "name": "id",
+                   "type": "uint64",
+                   "ref": false,
+                   "description": "Player ID"
+               },
+               {
+                   "name": "perm",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Permission line"
+               }
+           ],
+           "retType": {
+               "type": "int32",
+               "enum": {
+                   "name": "Access",
+                   "values": [
+                       {
+                           "name": "NotFound",
+                           "value": 0
+                       },
+                       {
+                           "name": "Disallow",
+                           "value": 1
+                       },
+                       {
+                           "name": "Allow",
+                           "value": 2
+                       }
+                   ]
+               },
+               "description": "Access.NotFround | Access.Disallow | Access.Allow"
+           }
+       },
+       {
+           "name": "HasGroup",
+           "group": "Usermanager",
+           "description": "",
+           "funcName": "HasGroup",
+           "paramTypes": [
+               {
+                   "name": "id",
+                   "type": "uint64",
+                   "ref": false,
+                   "description": "Player ID"
+               },
+               {
+                   "name": "group",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Group name"
+               }
+           ],
+           "retType": {
+               "type": "bool",
+               "description": "false - Player/Group doesn't exist or belong to player"
+           }
+       },
+       {
+           "name": "GetImmunity",
+           "group": "Usermanager",
+           "description": "",
+           "funcName": "GetImmunity",
+           "paramTypes": [
+               {
+                   "name": "id",
+                   "type": "uint64",
+                   "ref": false,
+                   "description": "Player ID"
+               }
+           ],
+           "retType": {
+               "type": "int32",
+               "description": "Player immunity"
+           }
+       },
+       {
+           "name": "AddPermission",
+           "group": "Usermanager",
+           "description": "",
+           "funcName": "AddPermission",
+           "paramTypes": [
+               {
+                   "name": "id",
+                   "type": "uint64",
+                   "ref": false,
+                   "description": "Player ID"
+               },
+               {
+                   "name": "perm",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Permission line"
+               }
+           ],
+           "retType": {
+               "type": "bool",
+               "description": "false - player doesn't exist"
+           }
+       },
+       {
+           "name": "RemovePermission",
+           "group": "Usermanager",
+           "description": "",
+           "funcName": "RemovePermission",
+           "paramTypes": [
+               {
+                   "name": "id",
+                   "type": "uint64",
+                   "ref": false,
+                   "description": "Player ID"
+               },
+               {
+                   "name": "perm",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Permission line"
+               }
+           ],
+           "retType": {
+               "type": "bool",
+               "description": "false - player doesn't exist"
+           }
+       },
+       {
+           "name": "AddGroup",
+           "group": "Usermanager",
+           "description": "",
+           "funcName": "AddGroup",
+           "paramTypes": [
+               {
+                   "name": "id",
+                   "type": "uint64",
+                   "ref": false,
+                   "description": "Player ID"
+               },
+               {
+                   "name": "group",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Group name"
+               }
+           ],
+           "retType": {
+               "type": "bool",
+               "description": "false - Player/Group doesn't exist"
+           }
+       },
+       {
+           "name": "RemoveGroup",
+           "group": "Usermanager",
+           "description": "",
+           "funcName": "RemoveGroup",
+           "paramTypes": [
+               {
+                   "name": "id",
+                   "type": "uint64",
+                   "ref": false,
+                   "description": "Player ID"
+               },
+               {
+                   "name": "group",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Group name"
+               }
+           ],
+           "retType": {
+               "type": "bool",
+               "description": "false - Player/Group doesn't exist"
+           }
+       },
+       {
+           "name": "GetCookie",
+           "group": "Usermanager",
+           "description": "",
+           "funcName": "GetCookie",
+           "paramTypes": [
+               {
+                   "name": "id",
+                   "type": "uint64",
+                   "ref": false,
+                   "description": "Player ID"
+               },
+               {
+                   "name": "name",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Cookie name"
+               }
+           ],
+           "retType": {
+               "type": "any",
+               "description": "invalid - player/cookie doesn't exist"
+           }
+       },
+       {
+           "name": "SetCookie",
+           "group": "Usermanager",
+           "description": "",
+           "funcName": "SetCookie",
+           "paramTypes": [
+               {
+                   "name": "id",
+                   "type": "uint64",
+                   "ref": false,
+                   "description": "Player ID"
+               },
+               {
+                   "name": "name",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Cookie name"
+               },
+               {
+                   "name": "cookie",
+                   "type": "any",
+                   "ref": true,
+                   "description": "Cookie value"
+               }
+           ],
+           "retType": {
+               "type": "bool",
+               "description": "false - Player doesn't exist"
+           }
+       },
+       {
+           "name": "CreateUser",
+           "group": "Usermanager",
+           "description": "",
+           "funcName": "CreateUser",
+           "paramTypes": [
+               {
+                   "name": "id",
+                   "type": "uint64",
+                   "ref": false,
+                   "description": "Player ID"
+               },
+               {
+                   "name": "immunity",
+                   "type": "int32",
+                   "ref": false,
+                   "description": "Player immunity"
+               },
+               {
+                   "name": "lgroups",
+                   "type": "ptr64",
+                   "ref": false,
+                   "description": "Array of groups to inherit"
+               },
+               {
+                   "name": "perms",
+                   "type": "ptr64",
+                   "ref": false,
+                   "description": "Array of permissions"
+               }
+           ],
+           "retType": {
+               "type": "bool",
+               "description": "false - Player already exists"
+           }
+       },
+       {
+           "name": "DeleteUser",
+           "group": "Usermanager",
+           "description": "",
+           "funcName": "DeleteUser",
+           "paramTypes": [
+               {
+                   "name": "id",
+                   "type": "uint64",
+                   "ref": false,
+                   "description": "Player ID"
+               }
+           ],
+           "retType": {
+               "type": "bool",
+               "description": "false - Player doesn't exist"
+           }
+       },
+       {
+           "name": "GetGroup",
+           "group": "Groupmanager",
+           "description": "",
+           "funcName": "GetGroup",
+           "paramTypes": [
+               {
+                   "name": "name",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Group name"
+               }
+           ],
+           "retType": {
+               "type": "ptr64",
+               "description": "Pointer to group"
+           }
+       },
+       {
+           "name": "HasPermissionGroup",
+           "group": "Groupmanager",
+           "description": "",
+           "funcName": "HasPermissionGroup",
+           "paramTypes": [
+               {
+                   "name": "name",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Group name"
+               },
+               {
+                   "name": "perm",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Permission line"
+               }
+           ],
+           "retType": {
+               "type": "int32",
+               "enum": {
+                   "name": "Access",
+                   "values": [
+                       {
+                           "name": "NotFound",
+                           "value": 0
+                       },
+                       {
+                           "name": "Disallow",
+                           "value": 1
+                       },
+                       {
+                           "name": "Allow",
+                           "value": 2
+                       }
+                   ]
+               },
+               "description": "Access.NotFround | Access.Disallow | Access.Allow"
+           }
+       },
+       {
+           "name": "HasParentGroup",
+           "group": "Groupmanager",
+           "description": "",
+           "funcName": "HasParentGroup",
+           "paramTypes": [
+               {
+                   "name": "name1",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Name of first group"
+               },
+               {
+                   "name": "name2",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Name of group to find"
+               }
+           ],
+           "retType": {
+               "type": "bool",
+               "description": "true - name1 have name2 in parents"
+           }
+       },
+       {
+           "name": "GetPriorityGroup",
+           "group": "Groupmanager",
+           "description": "",
+           "funcName": "GetPriorityGroup",
+           "paramTypes": [
+               {
+                   "name": "name",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Group name"
+               }
+           ],
+           "retType": {
+               "type": "int32",
+               "description": "Group priority"
+           }
+       },
+       {
+           "name": "AddPermissionGroup",
+           "group": "Groupmanager",
+           "description": "",
+           "funcName": "AddPermissionGroup",
+           "paramTypes": [
+               {
+                   "name": "name",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Group name"
+               },
+               {
+                   "name": "perm",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Permission line"
+               }
+           ],
+           "retType": {
+               "type": "bool",
+               "description": "false - group does not exist"
+           }
+       },
+       {
+           "name": "RemovePermissionGroup",
+           "group": "Groupmanager",
+           "description": "",
+           "funcName": "RemovePermissionGroup",
+           "paramTypes": [
+               {
+                   "name": "name",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Group name"
+               },
+               {
+                   "name": "perm",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Permission line"
+               }
+           ],
+           "retType": {
+               "type": "bool",
+               "description": "false - group does not exist"
+           }
+       },
+       {
+           "name": "CreateGroup",
+           "group": "Groupmanager",
+           "description": "",
+           "funcName": "CreateGroup",
+           "paramTypes": [
+               {
+                   "name": "name",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Group name"
+               },
+               {
+                   "name": "perms",
+                   "type": "string[]",
+                   "ref": false,
+                   "description": "Array of permission lines"
+               },
+               {
+                   "name": "priority",
+                   "type": "int32",
+                   "ref": false,
+                   "description": "Group priority"
+               },
+               {
+                   "name": "parent",
+                   "type": "ptr64",
+                   "ref": false,
+                   "description": "Parent group"
+               }
+           ],
+           "retType": {
+               "type": "bool",
+               "description": "false - group already exists"
+           }
+       },
+       {
+           "name": "DeleteGroup",
+           "group": "Groupmanager",
+           "description": "",
+           "funcName": "DeleteGroup",
+           "paramTypes": [
+               {
+                   "name": "name",
+                   "type": "string",
+                   "ref": false,
+                   "description": "Group name"
+               }
+           ],
+           "retType": {
+               "type": "bool",
+               "description": "false - group does not exist"
+           }
+       }
+   ]
+}
