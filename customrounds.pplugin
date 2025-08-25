@@ -1,0 +1,986 @@
+{
+	"$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json",
+	"fileVersion": 1,
+	"version": "1.0.0",
+	"friendlyName": "[GO] Custom Rounds Core",
+	"description": "Custom Rounds Core.",
+	"createdBy": "Fr4nch",
+	"createdByURL": "https://github.com/fr0nch",
+	"entryPoint": "bin/customrounds",
+	"supportedPlatforms": [],
+	"languageModule": {
+		"name": "golang"
+	},
+	"dependencies": [
+		{
+			"name": "s2sdk"
+		}
+	],
+	"exportedMethods": [
+		{
+			"name": "SetNextRound",
+			"group": "RoundManager",
+			"description": "Set next round by name.",
+			"funcName": "__SetNextRound",
+			"paramTypes": [
+				{
+					"name": "name",
+					"type": "string",
+					"ref": false,
+					"description": "Имя раунда."
+				},
+				{
+					"name": "client",
+					"type": "int32",
+					"ref": false,
+					"description": "ID клиента, инициирующего вызов."
+				}
+			],
+			"retType": {
+				"type": "bool",
+				"description": "True, если раунд успешно установлен, иначе false."
+			}
+		},
+		{
+			"name": "CancelNextRound",
+			"group": "RoundManager",
+			"description": "Cancel next round.",
+			"funcName": "__CancelNextRound",
+			"paramTypes": [],
+			"retType": {
+				"type": "bool",
+				"description": "True, если следующий раунд был отменён, иначе false."
+			}
+		},
+		{
+			"name": "StartRound",
+			"group": "RoundManager",
+			"description": "Force start round with specified name.",
+			"funcName": "__StartRound",
+			"paramTypes": [
+				{
+					"name": "name",
+					"type": "string",
+					"ref": false,
+					"description": "Имя раунда для старта."
+				},
+				{
+					"name": "client",
+					"type": "int32",
+					"description": "ID клиента, инициировавшего событие."
+				}
+			],
+			"retType": {
+				"type": "bool",
+				"description": "True, если раунд успешно запущен, иначе false."
+			}
+		},
+		{
+			"name": "StopRound",
+			"group": "RoundManager",
+			"description": "Stop current round.",
+			"funcName": "__StopRound",
+			"paramTypes": [],
+			"retType": {
+				"type": "bool",
+				"description": "True, если раунд был остановлен, иначе false."
+			}
+		},
+		{
+			"name": "IsCustomRound",
+			"group": "RoundManager",
+			"description": "Check if current round is custom.",
+			"funcName": "__IsCustomRound",
+			"paramTypes": [],
+			"retType": {
+				"type": "bool",
+				"description": "True, если текущий раунд кастомный, иначе false."
+			}
+		},
+		{
+			"name": "IsNextRoundCustom",
+			"group": "RoundManager",
+			"description": "Check if next round is custom.",
+			"funcName": "__IsNextRoundCustom",
+			"paramTypes": [],
+			"retType": {
+				"type": "bool",
+				"description": "True, если следующий раунд кастомный, иначе false."
+			}
+		},
+		{
+			"name": "IsRoundEnd",
+			"group": "RoundManager",
+			"description": "Check if round is ended.",
+			"funcName": "__IsRoundEnd",
+			"paramTypes": [],
+			"retType": {
+				"type": "bool",
+				"description": "True, если раунд завершён, иначе false."
+			}
+		},
+		{
+			"name": "IsRoundExists",
+			"group": "RoundManager",
+			"description": "Check if round exists by name.",
+			"funcName": "__IsRoundExists",
+			"paramTypes": [
+				{
+					"name": "name",
+					"type": "string",
+					"ref": false,
+					"description": "Имя раунда."
+				}
+			],
+			"retType": {
+				"type": "bool",
+				"description": "True, если раунд существует, иначе false."
+			}
+		},
+		{
+			"name": "GetNextRoundName",
+			"group": "RoundManager",
+			"description": "Get next round name.",
+			"funcName": "__GetNextRoundName",
+			"paramTypes": [],
+			"retType": {
+				"type": "string",
+				"description": "Имя следующего раунда, либо пустая строка если не задан."
+			}
+		},
+		{
+			"name": "GetCurrentRoundName",
+			"group": "RoundManager",
+			"description": "Get current round name.",
+			"funcName": "__GetCurrentRoundName",
+			"paramTypes": [],
+			"retType": {
+				"type": "string",
+				"description": "Имя текущего раунда, либо пустая строка если не задан."
+			}
+		},
+		{
+			"name": "ReloadConfig",
+			"group": "RoundManager",
+			"description": "Reload rounds config.",
+			"funcName": "__ReloadConfig",
+			"paramTypes": [],
+			"retType": {
+				"type": "void",
+				"description": "Нет возвращаемого значения."
+			}
+		},
+		{
+			"name": "OnConfigLoad_Register",
+			"group": "Events",
+			"description": "Регистрирует callback-функцию, вызываемую при загрузке конфигурации.",
+			"funcName": "__OnConfigLoad_Register",
+			"paramTypes": [
+				{
+					"name": "callback",
+					"type": "function",
+					"ref": false,
+					"description": "Callback-функция, вызываемая при загрузке конфигурации.",
+					"prototype": {
+						"name": "OnConfigLoadCallback",
+						"funcName": "_",
+						"description": "Обрабатывает событие загрузки конфигурации.",
+						"paramTypes": [],
+						"retType": {
+							"type": "void",
+							"description": "Ничего не возвращает"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32",
+				"description": "Возвращает индекс зарегистрированного каллбека."
+			}
+		},
+		{
+			"name": "OnConfigLoad_Unregister",
+			"group": "Events",
+			"description": "Удаляет ранее зарегистрированный callback для события загрузки конфигурации.",
+			"funcName": "__OnConfigLoad_Unregister",
+			"paramTypes": [
+				{
+					"name": "index",
+					"type": "int32",
+					"description": "Индекс зарегистрированного callback'а, который нужно удалить."
+				}
+			],
+			"retType": {
+				"type": "void",
+				"description": "Не возвращает значения."
+			}
+		},
+		{
+			"name": "OnConfigLoaded_Register",
+			"group": "Events",
+			"description": "Регистрирует callback-функцию, вызываемую после загрузки конфигурации с данными раундов.",
+			"funcName": "__OnConfigLoaded_Register",
+			"paramTypes": [
+				{
+					"name": "callback",
+					"type": "function",
+					"ref": false,
+					"description": "Callback-функция, вызываемая после загрузки конфигурации.",
+					"prototype": {
+						"name": "OnConfigLoadedCallback",
+						"funcName": "_",
+						"description": "Обрабатывает событие загруженной конфигурации с данными раундов.",
+						"paramTypes": [
+							{
+								"name": "rounds",
+								"type": "string",
+								"ref": false,
+								"description": "JSON-строка с данными о раундах."
+							}
+						],
+						"retType": {
+							"type": "void",
+							"description": "Ничего не возвращает"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32",
+				"description": "Возвращает индекс зарегистрированного каллбека."
+			}
+		},
+		{
+			"name": "OnConfigLoaded_Unregister",
+			"group": "Events",
+			"description": "Удаляет ранее зарегистрированный callback для события загруженной конфигурации.",
+			"funcName": "__OnConfigLoaded_Unregister",
+			"paramTypes": [
+				{
+					"name": "index",
+					"type": "int32",
+					"description": "Индекс зарегистрированного callback'а, который нужно удалить."
+				}
+			],
+			"retType": {
+				"type": "void",
+				"description": "Не возвращает значения."
+			}
+		},
+		{
+			"name": "OnSetNextRoundPre_Register",
+			"group": "Events",
+			"description": "Регистрирует callback-функцию, вызываемую при наступлении следующего раунда.",
+			"funcName": "__OnSetNextRound_Register",
+			"paramTypes": [
+				{
+					"name": "callback",
+					"type": "function",
+					"ref": false,
+					"description": "Callback-функция, вызываемая при наступлении следующего раунда.",
+					"prototype": {
+						"name": "OnSetNextRoundPreCallback",
+						"funcName": "_",
+						"description": "Обрабатывает событие установки следующего раунда. Позволяет реагировать на событие, используя данные о его названии и клиенте.",
+						"paramTypes": [
+							{
+								"name": "name",
+								"type": "string",
+								"ref": true,
+								"description": "Указатель на строку с именем следующего раунда."
+							},
+							{
+								"name": "client",
+								"type": "int32",
+								"description": "ID клиента, инициировавшего событие."
+							}
+						],
+						"retType": {
+							"type": "int32",
+							"description": "Результат выполнения callback'а.",
+							"enum": {
+								"name": "PluginResult",
+								"description": "Возможные результаты выполнения операции.",
+								"values": [
+									{
+										"value": 0,
+										"name": "Continue",
+										"description": "Продолжить выполнение без изменений."
+									},
+									{
+										"value": 1,
+										"name": "Changed",
+										"description": "Состояние или поведение было изменено."
+									},
+									{
+										"value": 2,
+										"name": "Handled",
+										"description": "Событие обработано, дальнейшие действия не требуются."
+									},
+									{
+										"value": 3,
+										"name": "Stop",
+										"description": "Остановить обработку, дальнейшие шаги не выполняются."
+									}
+								]
+							}
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32",
+				"description": "Возвращает индекс зарегистрированного каллбека."
+			}
+		},
+		{
+			"name": "OnSetNextRoundPre_Unregister",
+			"group": "Events",
+			"description": "Удаляет ранее зарегистрированный callback для события следующего раунда.",
+			"funcName": "__OnSetNextRoundPre_Unregister",
+			"paramTypes": [
+				{
+					"name": "index",
+					"type": "int32",
+					"description": "Индекс зарегистрированного callback'а, который нужно удалить."
+				}
+			],
+			"retType": {
+				"type": "void",
+				"description": "Не возвращает значения."
+			}
+		},
+		{
+			"name": "OnSetNextRoundPost_Register",
+			"group": "Events",
+			"description": "Регистрирует callback-функцию, вызываемую при наступлении следующего раунда.",
+			"funcName": "__OnSetNextRoundPre_Register",
+			"paramTypes": [
+				{
+					"name": "callback",
+					"type": "function",
+					"ref": false,
+					"description": "Callback-функция, вызываемая при наступлении следующего раунда.",
+					"prototype": {
+						"name": "OnSetNextRoundPostCallback",
+						"funcName": "_",
+						"description": "Обрабатывает событие установки следующего раунда. Позволяет реагировать на событие, используя данные о его названии и клиенте.",
+						"paramTypes": [
+							{
+								"name": "name",
+								"type": "string",
+								"ref": false,
+								"description": "Имя следующего раунда."
+							},
+							{
+								"name": "client",
+								"type": "int32",
+								"description": "ID клиента, инициировавшего событие."
+							}
+						],
+						"retType": {
+							"type": "void",
+							"description": "Ничего не возвращает"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32",
+				"description": "Возвращает индекс зарегистрированного каллбека."
+			}
+		},
+		{
+			"name": "OnSetNextRoundPost_Unregister",
+			"group": "Events",
+			"description": "Удаляет ранее зарегистрированный callback для события следующего раунда.",
+			"funcName": "__OnSetNextRoundPost_Unregister",
+			"paramTypes": [
+				{
+					"name": "index",
+					"type": "int32",
+					"description": "Индекс зарегистрированного callback'а, который нужно удалить."
+				}
+			],
+			"retType": {
+				"type": "void",
+				"description": "Не возвращает значения."
+			}
+		},
+		{
+			"name": "OnForceRoundStartPre_Register",
+			"group": "Events",
+			"description": "Регистрирует callback-функцию, вызываемую при наступлении следующего раунда.",
+			"funcName": "__OnForceRoundStart_Register",
+			"paramTypes": [
+				{
+					"name": "callback",
+					"type": "function",
+					"ref": false,
+					"description": "Callback-функция, вызываемая при наступлении следующего раунда.",
+					"prototype": {
+						"name": "OnForceRoundStartPreCallback",
+						"funcName": "_",
+						"description": "Обрабатывает событие установки следующего раунда. Позволяет реагировать на событие, используя данные о его названии и клиенте.",
+						"paramTypes": [
+							{
+								"name": "name",
+								"type": "string",
+								"ref": true,
+								"description": "Указатель на строку с именем следующего раунда."
+							},
+							{
+								"name": "client",
+								"type": "int32",
+								"description": "ID клиента, инициировавшего событие."
+							}
+						],
+						"retType": {
+							"type": "int32",
+							"description": "Результат выполнения callback'а.",
+							"enum": {
+								"name": "PluginResult",
+								"description": "Возможные результаты выполнения операции.",
+								"values": [
+									{
+										"value": 0,
+										"name": "Continue",
+										"description": "Продолжить выполнение без изменений."
+									},
+									{
+										"value": 1,
+										"name": "Changed",
+										"description": "Состояние или поведение было изменено."
+									},
+									{
+										"value": 2,
+										"name": "Handled",
+										"description": "Событие обработано, дальнейшие действия не требуются."
+									},
+									{
+										"value": 3,
+										"name": "Stop",
+										"description": "Остановить обработку, дальнейшие шаги не выполняются."
+									}
+								]
+							}
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32",
+				"description": "Возвращает индекс зарегистрированного каллбека."
+			}
+		},
+		{
+			"name": "OnForceRoundStartPre_Unregister",
+			"group": "Events",
+			"description": "Удаляет ранее зарегистрированный callback для события следующего раунда.",
+			"funcName": "__OnForceRoundStartPre_Unregister",
+			"paramTypes": [
+				{
+					"name": "index",
+					"type": "int32",
+					"description": "Индекс зарегистрированного callback'а, который нужно удалить."
+				}
+			],
+			"retType": {
+				"type": "void",
+				"description": "Не возвращает значения."
+			}
+		},
+		{
+			"name": "OnForceRoundStartPost_Register",
+			"group": "Events",
+			"description": "Регистрирует callback-функцию, вызываемую при наступлении следующего раунда.",
+			"funcName": "__OnForceRoundStartPre_Register",
+			"paramTypes": [
+				{
+					"name": "callback",
+					"type": "function",
+					"ref": false,
+					"description": "Callback-функция, вызываемая при наступлении следующего раунда.",
+					"prototype": {
+						"name": "OnForceRoundStartPostCallback",
+						"funcName": "_",
+						"description": "Обрабатывает событие установки следующего раунда. Позволяет реагировать на событие, используя данные о его названии и клиенте.",
+						"paramTypes": [
+							{
+								"name": "name",
+								"type": "string",
+								"ref": false,
+								"description": "Имя следующего раунда."
+							},
+							{
+								"name": "client",
+								"type": "int32",
+								"description": "ID клиента, инициировавшего событие."
+							}
+						],
+						"retType": {
+							"type": "void",
+							"description": "Ничего не возвращает"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32",
+				"description": "Возвращает индекс зарегистрированного каллбека."
+			}
+		},
+		{
+			"name": "OnForceRoundStartPost_Unregister",
+			"group": "Events",
+			"description": "Удаляет ранее зарегистрированный callback для события следующего раунда.",
+			"funcName": "__OnForceRoundStartPost_Unregister",
+			"paramTypes": [
+				{
+					"name": "index",
+					"type": "int32",
+					"description": "Индекс зарегистрированного callback'а, который нужно удалить."
+				}
+			],
+			"retType": {
+				"type": "void",
+				"description": "Не возвращает значения."
+			}
+		},
+		{
+			"name": "OnCancelCurrentRoundPre_Register",
+			"group": "Events",
+			"description": "Регистрирует callback-функцию, вызываемую перед отменой текущего раунда.",
+			"funcName": "__OnCancelCurrentRoundPre_Register",
+			"paramTypes": [
+				{
+					"name": "callback",
+					"type": "function",
+					"ref": false,
+					"description": "Callback-функция, вызываемая перед отменой текущего раунда.",
+					"prototype": {
+						"name": "OnCancelCurrentRoundPreCallback",
+						"funcName": "_",
+						"description": "Обрабатывает событие отмены текущего раунда.",
+						"paramTypes": [
+							{
+								"name": "name",
+								"type": "string",
+								"ref": false,
+								"description": "Имя текущего раунда."
+							},
+							{
+								"name": "client",
+								"type": "int32",
+								"description": "ID клиента, инициировавшего событие."
+							}
+						],
+						"retType": {
+							"type": "int32",
+							"description": "Результат выполнения callback'а.",
+							"enum": {
+								"name": "PluginResult",
+								"description": "Возможные результаты выполнения операции.",
+								"values": [
+									{
+										"value": 0,
+										"name": "Continue",
+										"description": "Продолжить выполнение без изменений."
+									},
+									{
+										"value": 1,
+										"name": "Changed",
+										"description": "Состояние или поведение было изменено."
+									},
+									{
+										"value": 2,
+										"name": "Handled",
+										"description": "Событие обработано, дальнейшие действия не требуются."
+									},
+									{
+										"value": 3,
+										"name": "Stop",
+										"description": "Остановить обработку, дальнейшие шаги не выполняются."
+									}
+								]
+							}
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32",
+				"description": "Возвращает индекс зарегистрированного каллбека."
+			}
+		},
+		{
+			"name": "OnCancelCurrentRoundPre_Unregister",
+			"group": "Events",
+			"description": "Удаляет ранее зарегистрированный callback для события отмены текущего раунда.",
+			"funcName": "__OnCancelCurrentRoundPre_Unregister",
+			"paramTypes": [
+				{
+					"name": "index",
+					"type": "int32",
+					"description": "Индекс зарегистрированного callback'а, который нужно удалить."
+				}
+			],
+			"retType": {
+				"type": "void",
+				"description": "Не возвращает значения."
+			}
+		},
+		{
+			"name": "OnCancelCurrentRoundPost_Register",
+			"group": "Events",
+			"description": "Регистрирует callback-функцию, вызываемую после отмены текущего раунда.",
+			"funcName": "__OnCancelCurrentRoundPost_Register",
+			"paramTypes": [
+				{
+					"name": "callback",
+					"type": "function",
+					"ref": false,
+					"description": "Callback-функция, вызываемая после отмены текущего раунда.",
+					"prototype": {
+						"name": "OnCancelCurrentRoundPostCallback",
+						"funcName": "_",
+						"description": "Обрабатывает событие отмененного текущего раунда.",
+						"paramTypes": [
+							{
+								"name": "name",
+								"type": "string",
+								"ref": false,
+								"description": "Имя отмененного раунда."
+							},
+							{
+								"name": "client",
+								"type": "int32",
+								"description": "ID клиента, инициировавшего событие."
+							}
+						],
+						"retType": {
+							"type": "void",
+							"description": "Ничего не возвращает"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32",
+				"description": "Возвращает индекс зарегистрированного каллбека."
+			}
+		},
+		{
+			"name": "OnCancelCurrentRoundPost_Unregister",
+			"group": "Events",
+			"description": "Удаляет ранее зарегистрированный callback для события отмененного текущего раунда.",
+			"funcName": "__OnCancelCurrentRoundPost_Unregister",
+			"paramTypes": [
+				{
+					"name": "index",
+					"type": "int32",
+					"description": "Индекс зарегистрированного callback'а, который нужно удалить."
+				}
+			],
+			"retType": {
+				"type": "void",
+				"description": "Не возвращает значения."
+			}
+		},
+		{
+			"name": "OnCancelNextRoundPre_Register",
+			"group": "Events",
+			"description": "Регистрирует callback-функцию, вызываемую перед отменой следующего раунда.",
+			"funcName": "__OnCancelNextRoundPre_Register",
+			"paramTypes": [
+				{
+					"name": "callback",
+					"type": "function",
+					"ref": false,
+					"description": "Callback-функция, вызываемая перед отменой следующего раунда.",
+					"prototype": {
+						"name": "OnCancelNextRoundPreCallback",
+						"funcName": "_",
+						"description": "Обрабатывает событие отмены следующего раунда.",
+						"paramTypes": [
+							{
+								"name": "name",
+								"type": "string",
+								"ref": false,
+								"description": "Имя следующего раунда."
+							},
+							{
+								"name": "client",
+								"type": "int32",
+								"description": "ID клиента, инициировавшего событие."
+							}
+						],
+						"retType": {
+							"type": "int32",
+							"description": "Результат выполнения callback'а.",
+							"enum": {
+								"name": "PluginResult",
+								"description": "Возможные результаты выполнения операции.",
+								"values": [
+									{
+										"value": 0,
+										"name": "Continue",
+										"description": "Продолжить выполнение без изменений."
+									},
+									{
+										"value": 1,
+										"name": "Changed",
+										"description": "Состояние или поведение было изменено."
+									},
+									{
+										"value": 2,
+										"name": "Handled",
+										"description": "Событие обработано, дальнейшие действия не требуются."
+									},
+									{
+										"value": 3,
+										"name": "Stop",
+										"description": "Остановить обработку, дальнейшие шаги не выполняются."
+									}
+								]
+							}
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32",
+				"description": "Возвращает индекс зарегистрированного каллбека."
+			}
+		},
+		{
+			"name": "OnCancelNextRoundPre_Unregister",
+			"group": "Events",
+			"description": "Удаляет ранее зарегистрированный callback для события отмены следующего раунда.",
+			"funcName": "__OnCancelNextRoundPre_Unregister",
+			"paramTypes": [
+				{
+					"name": "index",
+					"type": "int32",
+					"description": "Индекс зарегистрированного callback'а, который нужно удалить."
+				}
+			],
+			"retType": {
+				"type": "void",
+				"description": "Не возвращает значения."
+			}
+		},
+		{
+			"name": "OnCancelNextRoundPost_Register",
+			"group": "Events",
+			"description": "Регистрирует callback-функцию, вызываемую после отмены следующего раунда.",
+			"funcName": "__OnCancelNextRoundPost_Register",
+			"paramTypes": [
+				{
+					"name": "callback",
+					"type": "function",
+					"ref": false,
+					"description": "Callback-функция, вызываемая после отмены следующего раунда.",
+					"prototype": {
+						"name": "OnCancelNextRoundPostCallback",
+						"funcName": "_",
+						"description": "Обрабатывает событие отмененного следующего раунда.",
+						"paramTypes": [
+							{
+								"name": "name",
+								"type": "string",
+								"ref": false,
+								"description": "Имя отмененного следующего раунда."
+							},
+							{
+								"name": "client",
+								"type": "int32",
+								"description": "ID клиента, инициировавшего событие."
+							}
+						],
+						"retType": {
+							"type": "void",
+							"description": "Ничего не возвращает"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32",
+				"description": "Возвращает индекс зарегистрированного каллбека."
+			}
+		},
+		{
+			"name": "OnCancelNextRoundPost_Unregister",
+			"group": "Events",
+			"description": "Удаляет ранее зарегистрированный callback для события отмененного следующего раунда.",
+			"funcName": "__OnCancelNextRoundPost_Unregister",
+			"paramTypes": [
+				{
+					"name": "index",
+					"type": "int32",
+					"description": "Индекс зарегистрированного callback'а, который нужно удалить."
+				}
+			],
+			"retType": {
+				"type": "void",
+				"description": "Не возвращает значения."
+			}
+		},
+		{
+			"name": "OnPlayerSpawn_Register",
+			"group": "Events",
+			"description": "Регистрирует callback-функцию, вызываемую при спавне игрока.",
+			"funcName": "__OnPlayerSpawn_Register",
+			"paramTypes": [
+				{
+					"name": "callback",
+					"type": "function",
+					"ref": false,
+					"description": "Callback-функция, вызываемая при спавне игрока.",
+					"prototype": {
+						"name": "OnPlayerSpawnCallback",
+						"funcName": "_",
+						"description": "Обрабатывает событие спавна игрока.",
+						"paramTypes": [
+							{
+								"name": "client",
+								"type": "int32",
+								"description": "ID клиента (игрока)."
+							}
+						],
+						"retType": {
+							"type": "void",
+							"description": "Ничего не возвращает"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32",
+				"description": "Возвращает индекс зарегистрированного каллбека."
+			}
+		},
+		{
+			"name": "OnPlayerSpawn_Unregister",
+			"group": "Events",
+			"description": "Удаляет ранее зарегистрированный callback для события спавна игрока.",
+			"funcName": "__OnPlayerSpawn_Unregister",
+			"paramTypes": [
+				{
+					"name": "index",
+					"type": "int32",
+					"description": "Индекс зарегистрированного callback'а, который нужно удалить."
+				}
+			],
+			"retType": {
+				"type": "void",
+				"description": "Не возвращает значения."
+			}
+		},
+		{
+			"name": "OnRoundStart_Register",
+			"group": "Events",
+			"description": "Регистрирует callback-функцию, вызываемую при старте раунда.",
+			"funcName": "__OnRoundStart_Register",
+			"paramTypes": [
+				{
+					"name": "callback",
+					"type": "function",
+					"ref": false,
+					"description": "Callback-функция, вызываемая при старте раунда.",
+					"prototype": {
+						"name": "OnRoundStartCallback",
+						"funcName": "_",
+						"description": "Обрабатывает событие старта раунда.",
+						"paramTypes": [
+							{
+								"name": "presetRound",
+								"type": "string",
+								"ref": false,
+								"description": "JSON-строка с данными о текущем раунде."
+							}
+						],
+						"retType": {
+							"type": "void",
+							"description": "Ничего не возвращает"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32",
+				"description": "Возвращает индекс зарегистрированного каллбека."
+			}
+		},
+		{
+			"name": "OnRoundStart_Unregister",
+			"group": "Events",
+			"description": "Удаляет ранее зарегистрированный callback для события старта раунда.",
+			"funcName": "__OnRoundStart_Unregister",
+			"paramTypes": [
+				{
+					"name": "index",
+					"type": "int32",
+					"description": "Индекс зарегистрированного callback'а, который нужно удалить."
+				}
+			],
+			"retType": {
+				"type": "void",
+				"description": "Не возвращает значения."
+			}
+		},
+		{
+			"name": "OnRoundEnd_Register",
+			"group": "Events",
+			"description": "Регистрирует callback-функцию, вызываемую при завершении раунда.",
+			"funcName": "__OnRoundEnd_Register",
+			"paramTypes": [
+				{
+					"name": "callback",
+					"type": "function",
+					"ref": false,
+					"description": "Callback-функция, вызываемая при завершении раунда.",
+					"prototype": {
+						"name": "OnRoundEndCallback",
+						"funcName": "_",
+						"description": "Обрабатывает событие завершения раунда.",
+						"paramTypes": [
+							{
+								"name": "presetRound",
+								"type": "string",
+								"ref": false,
+								"description": "JSON-строка с данными о завершенном раунде."
+							}
+						],
+						"retType": {
+							"type": "void",
+							"description": "Ничего не возвращает"
+						}
+					}
+				}
+			],
+			"retType": {
+				"type": "int32",
+				"description": "Возвращает индекс зарегистрированного каллбека."
+			}
+		},
+		{
+			"name": "OnRoundEnd_Unregister",
+			"group": "Events",
+			"description": "Удаляет ранее зарегистрированный callback для события завершения раунда.",
+			"funcName": "__OnRoundEnd_Unregister",
+			"paramTypes": [
+				{
+					"name": "index",
+					"type": "int32",
+					"description": "Индекс зарегистрированного callback'а, который нужно удалить."
+				}
+			],
+			"retType": {
+				"type": "void",
+				"description": "Не возвращает значения."
+			}
+		}
+	]
+}
