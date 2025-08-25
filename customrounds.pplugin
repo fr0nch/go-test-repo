@@ -42,6 +42,30 @@
 			}
 		},
 		{
+			"name": "SetNextRoundFromJson",
+			"group": "RoundManager",
+			"description": "Устанавливает следующий раунд из JSON-конфигурации.",
+			"funcName": "__SetNextRoundFromJson",
+			"paramTypes": [
+				{
+					"name": "presetRound",
+					"type": "string",
+					"ref": false,
+					"description": "JSON-строка с настройками раунда."
+				},
+				{
+					"name": "client",
+					"type": "int32",
+					"ref": false,
+					"description": "ID клиента, инициирующего вызов."
+				}
+			],
+			"retType": {
+				"type": "bool",
+				"description": "True, если раунд успешно установлен из JSON, иначе false."
+			}
+		},
+		{
 			"name": "CancelNextRound",
 			"group": "RoundManager",
 			"description": "Cancel next round.",
@@ -157,6 +181,39 @@
 			"retType": {
 				"type": "string",
 				"description": "Имя текущего раунда, либо пустая строка если не задан."
+			}
+		},
+		{
+			"name": "GetJsonString",
+			"group": "RoundManager",
+			"description": "Получает JSON-строку со всеми настройками раундов.",
+			"funcName": "__GetJsonString",
+			"paramTypes": [],
+			"retType": {
+				"type": "string",
+				"description": "JSON-строка с настройками всех раундов."
+			}
+		},
+		{
+			"name": "GetCurrentRoundJsonString",
+			"group": "RoundManager",
+			"description": "Получает JSON-строку с настройками текущего раунда.",
+			"funcName": "__GetCurrentRoundJsonString",
+			"paramTypes": [],
+			"retType": {
+				"type": "string",
+				"description": "JSON-строка с настройками текущего раунда."
+			}
+		},
+		{
+			"name": "GetNextRoundKeyValueJsonString",
+			"group": "RoundManager",
+			"description": "Получает JSON-строку с настройками следующего раунда.",
+			"funcName": "__GetNextRoundKeyValueJsonString",
+			"paramTypes": [],
+			"retType": {
+				"type": "string",
+				"description": "JSON-строка с настройками следующего раунда."
 			}
 		},
 		{
